@@ -51,8 +51,8 @@ public class AccountController {
             throw new ApiBadRequestException("Currency is not correct");
         }
 
-        em.getTransaction().begin();
         if(fromBankAccount.getAccountBalance().compareTo(request.getAmount()) >= 0) {
+            em.getTransaction().begin();
             fromBankAccount.setAccountBalance(fromBankAccount.getAccountBalance().subtract(request.getAmount()));
             toBankAccount.setAccountBalance(toBankAccount.getAccountBalance().add(request.getAmount()));
 
@@ -73,7 +73,6 @@ public class AccountController {
             }
         }
         else {
-            em.getTransaction().rollback();
             throw new ApiBadRequestException("Account balance doesn't have enough money");
         }
 
