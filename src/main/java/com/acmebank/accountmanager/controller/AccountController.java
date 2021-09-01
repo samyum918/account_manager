@@ -46,6 +46,10 @@ public class AccountController {
         BankAccount fromBankAccount = getBankAccount(request.getFromAccountNumber(), em);
         BankAccount toBankAccount = getBankAccount(request.getToAccountNumber(), em);
 
+        if(!request.getCurrency().equalsIgnoreCase(fromBankAccount.getCurrency())) {
+            throw new ApiBadRequestException("Currency is not correct");
+        }
+
         em.getTransaction().begin();
         if(fromBankAccount.getAccountBalance().compareTo(request.getAmount()) >= 0) {
             fromBankAccount.setAccountBalance(fromBankAccount.getAccountBalance().subtract(request.getAmount()));
