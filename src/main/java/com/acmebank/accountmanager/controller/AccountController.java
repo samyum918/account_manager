@@ -3,6 +3,7 @@ package com.acmebank.accountmanager.controller;
 import com.acmebank.accountmanager.controller.request.TransferAmountRequest;
 import com.acmebank.accountmanager.exception.ApiBadRequestException;
 import com.acmebank.accountmanager.exception.ApiResourceNotFoundException;
+import com.acmebank.accountmanager.exception.UnknownErrorException;
 import com.acmebank.accountmanager.model.BankAccount;
 import com.acmebank.accountmanager.model.TransferHistory;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -58,12 +59,17 @@ public class AccountController {
             TransferHistory transferHistory = new TransferHistory();
             BeanUtils.copyProperties(request, transferHistory);
 
-            em.merge(fromBankAccount);
-            em.merge(toBankAccount);
-            em.persist(transferHistory);
-            em.flush();
+            try {
+                em.merge(fromBankAccount);
+                em.merge(toBankAccount);
+                em.persist(transferHistory);
+                em.flush();
 
-            em.getTransaction().commit();
+                em.getTransaction().commit();
+            } catch (Exception ex) {
+                em.getTransaction().rollback();
+                throw new UnknownErrorException("Unknown error");
+            }
         }
         else {
             em.getTransaction().rollback();

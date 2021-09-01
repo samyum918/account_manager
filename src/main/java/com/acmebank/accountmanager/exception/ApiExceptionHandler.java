@@ -18,4 +18,10 @@ public class ApiExceptionHandler {
     public ApiErrorResponse apiResourceNotFoundHandling(ApiResourceNotFoundException ex) {
         return new ApiErrorResponse(ex.getMessage());
     }
+
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler({UnknownErrorException.class})
+    public ApiErrorResponse apiUnknownError(UnknownErrorException ex) {
+        return new ApiErrorResponse(ex.getMessage());
+    }
 }
