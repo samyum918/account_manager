@@ -57,6 +57,7 @@ class AccountManagerApplicationTests {
 		request.setFromAccountNumber("88888888");
 		request.setToAccountNumber("12345678");
 		request.setAmount(new BigDecimal(20));
+		request.setCurrency("HKD");
 		String jsonStr = mapper.writeValueAsString(request);
 		MvcResult result = mockMvc.perform(post("/account/transfer-amount")
 						.contentType(MediaType.APPLICATION_JSON)
@@ -72,6 +73,7 @@ class AccountManagerApplicationTests {
 		request.setFromAccountNumber("88888888");
 		request.setToAccountNumber("12345678");
 		request.setAmount(new BigDecimal(1000020));
+		request.setCurrency("HKD");
 		String jsonStr = mapper.writeValueAsString(request);
 		MvcResult result = mockMvc.perform(post("/account/transfer-amount")
 						.contentType(MediaType.APPLICATION_JSON)

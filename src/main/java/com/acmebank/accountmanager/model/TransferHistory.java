@@ -28,6 +28,9 @@ public class TransferHistory {
     @Column(name = "amount")
     private BigDecimal amount;
 
+    @Column(name = "currency")
+    private String currency;
+
     @Column(name = "create_time")
     private LocalDateTime createTime;
 

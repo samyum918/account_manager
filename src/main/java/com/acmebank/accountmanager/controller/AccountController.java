@@ -33,7 +33,7 @@ public class AccountController {
         EntityManager em = emf.createEntityManager();
 
         BankAccount bankAccount = getBankAccount(accNo, em);
-        objectNode.put("balance", bankAccount.getAccountBalance().toString());
+        objectNode.put("balance", bankAccount.getAccountBalance().toString() + " " + bankAccount.getCurrency());
 
         return objectNode;
     }

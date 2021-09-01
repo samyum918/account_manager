@@ -17,4 +17,6 @@ public class TransferAmountRequest {
     String toAccountNumber;
     @NotNull
     BigDecimal amount;
+    @NotNull
+    String currency;
 }

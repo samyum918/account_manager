@@ -23,4 +23,7 @@ public class BankAccount {
 
     @Column(name = "account_balance")
     private BigDecimal accountBalance;
+
+    @Column(name = "currency")
+    private String currency;
 }

@@ -10,5 +10,6 @@ POST http://localhost:8080/account/transfer-amount
 {
 "fromAccountNumber": "88888888",
 "toAccountNumber": "12345678",
-"amount": 999830.00
+"amount": 999830.00,
+"currency": "HKD"
 }
