@@ -51,29 +51,28 @@ public class AccountController {
             throw new ApiBadRequestException("Currency is not correct");
         }
 
-        if(fromBankAccount.getAccountBalance().compareTo(request.getAmount()) >= 0) {
-            em.getTransaction().begin();
-            fromBankAccount.setAccountBalance(fromBankAccount.getAccountBalance().subtract(request.getAmount()));
-            toBankAccount.setAccountBalance(toBankAccount.getAccountBalance().add(request.getAmount()));
-
-            TransferHistory transferHistory = new TransferHistory();
-            BeanUtils.copyProperties(request, transferHistory);
-
-            try {
-                em.merge(fromBankAccount);
-                em.merge(toBankAccount);
-                em.persist(transferHistory);
-                em.flush();
-
-                em.getTransaction().commit();
-            } catch (Exception ex) {
-                log.debug("Exception: ", ex);
-                em.getTransaction().rollback();
-                throw new UnknownErrorException("Unknown error");
-            }
-        }
-        else {
+        if(fromBankAccount.getAccountBalance().compareTo(request.getAmount()) < 0) {
             throw new ApiBadRequestException("Account balance doesn't have enough money");
+        }
+
+        em.getTransaction().begin();
+        fromBankAccount.setAccountBalance(fromBankAccount.getAccountBalance().subtract(request.getAmount()));
+        toBankAccount.setAccountBalance(toBankAccount.getAccountBalance().add(request.getAmount()));
+
+        TransferHistory transferHistory = new TransferHistory();
+        BeanUtils.copyProperties(request, transferHistory);
+
+        try {
+            em.merge(fromBankAccount);
+            em.merge(toBankAccount);
+            em.persist(transferHistory);
+            em.flush();
+
+            em.getTransaction().commit();
+        } catch (Exception ex) {
+            log.debug("Exception: ", ex);
+            em.getTransaction().rollback();
+            throw new UnknownErrorException("Unknown error");
         }
 
         objectNode.put("status", "success");
