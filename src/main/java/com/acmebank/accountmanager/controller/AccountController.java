@@ -67,6 +67,7 @@ public class AccountController {
 
                 em.getTransaction().commit();
             } catch (Exception ex) {
+                log.debug("Exception: ", ex);
                 em.getTransaction().rollback();
                 throw new UnknownErrorException("Unknown error");
             }
